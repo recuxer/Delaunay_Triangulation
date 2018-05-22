@@ -115,13 +115,56 @@ class DelaunayTriangulation
     void   Initialize(float, float, float, float, float, float);
     void   AddPoint(float, float);
     bool   CircumcircleCheck(float*, float*, float*, float*);
-
+    void   Verify();
     void   WriteOutTriangle(char *filename);
 
   private:
     std::vector<OneTriangle>  triangles;
     float DetHelp(float, float, float, float);
+    void EdgeFlip();
 };
+
+void DelaunayTriangulation::Verify()
+{
+    int ncells = triangles.size();
+    for(int j = 1; j < ncells; j++) {
+        if (triangles[j].triangle_across_e1 != NULL) {
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e1->p2))
+                printf("fix me!\n"); //call EdgeFlip
+            else printf("im ok..\n");
+        }
+        if (triangles[j].triangle_across_e2 != NULL) {
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e2->p3))
+                printf("fix me!\n"); //call EdgeFlip
+            else printf("im ok..\n");
+        } 
+        if (triangles[j].triangle_across_e3 != NULL) {
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e3->p3))
+                printf("fix me!\n"); //call EdgeFlip
+            else printf("im ok..\n");
+        }
+    }
+}
+
+void DelaunayTriangulation::EdgeFlip()
+{
+    /*
+     Find the points that share an edge with the 4th point inside the circumcircle. Get this info by which if statement above returns 'true'.
+     These points should no longer have an edge between them. Therefore, flip that edge to be between the 4th point and the other point in the triangle.
+     
+			      1								 1
+			    / | \						       /   \
+			  /   |   \						     /       \
+			2     |     4    <-- Does not meet DT requirement          2 _________ 4	This new triangle does meet the DT condition 
+			  \   |   /			Flip to instead    --->      \       /
+			    \ | /						       \   /
+			      3								 3
+
+     Then update points, edges, etc. of affected triangles to keep DS up to date.
+    */
+
+    //TODO create function to do the edge flips
+}
 
 void DelaunayTriangulation::WriteOutTriangle(char *filename)
 {
@@ -130,24 +173,6 @@ cerr << "NUMBER OF TRIANGLE is " << ncells << endl;
     int *celltypes = new int[ncells];
     for (int i = 0 ; i < ncells ; i++)
         celltypes[i] = VISIT_TRIANGLE;
-    
-    for(int j = 50; j < 100; j++) {
-        if (triangles[j].triangle_across_e1 != NULL) {    
-	    if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e1->p2))
-	        printf("fix me!\n");
-	    else printf("im ok..\n");
-        }
-        if (triangles[j].triangle_across_e2 != NULL) {
-	    if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e2->p3))
-	        printf("fix me!\n");
-	    else printf("im ok..\n");
-        }
-	if (triangles[j].triangle_across_e1 != NULL) {
-	    if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e3->p3))
-	        printf("fix me!\n");
-	    else printf("im ok..\n");
-	}
-    }
 
     int dimensions = 3; // always 3 for VTK
     int vertices_per_cell = 3;
@@ -355,7 +380,9 @@ int main()
     for (int i = 0 ; i < 100 ; i++)
         DT.AddPoint(pts[2*i], pts[2*i+1]);
  
-    //Create correct DT: Call CircumcircleCheck to do Edge-flipping
+    //TODO Create correct DT: Call CircumcircleCheck to do Edge-flipping
+    DT.Verify(); 
+
     DT.WriteOutTriangle("kristi.vtk");
     return 0;
 }
