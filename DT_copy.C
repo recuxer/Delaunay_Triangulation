@@ -121,32 +121,50 @@ class DelaunayTriangulation
   private:
     std::vector<OneTriangle>  triangles;
     float DetHelp(float, float, float, float);
-    void EdgeFlip();
+    void EdgeFlip(int, float*);
 };
 
 void DelaunayTriangulation::Verify()
 {
     int ncells = triangles.size();
-    for(int j = 1; j < ncells; j++) {
+    int iteration = 0;
+    int numTrianglesFlipped;
+    bool done = false;
+
+    while (!done) {
+      for(int j = 1; j < ncells; j++) {
+	numTrianglesFlipped = 0;
         if (triangles[j].triangle_across_e1 != NULL) {
-            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e1->p2))
-                printf("fix me!\n"); //call EdgeFlip
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e1->p2)) {
+                printf("fix me!\n");
+	        numTrianglesFlipped++; 
+	        EdgeFlip(j,triangles[j].triangle_across_e1->p2);
+	    }
             else printf("im ok..\n");
         }
         if (triangles[j].triangle_across_e2 != NULL) {
-            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e2->p3))
-                printf("fix me!\n"); //call EdgeFlip
-            else printf("im ok..\n");
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e2->p3)) {
+                printf("fix me!\n"); 
+	        numTrianglesFlipped++;
+		EdgeFlip(j,triangles[j].triangle_across_e2->p3);
+            }
+	    else printf("im ok..\n");
         } 
         if (triangles[j].triangle_across_e3 != NULL) {
-            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e3->p3))
-                printf("fix me!\n"); //call EdgeFlip
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e3->p3)) {
+                printf("fix me!\n"); 
+	        numTrianglesFlipped++;
+	        EdgeFlip(j, triangles[j].triangle_across_e3->p3);
+	    }
             else printf("im ok..\n");
         }
-    }
+      }
+    done = (numTrianglesFlipped == 0 ? true : false);
+    iteration++;
+    printf("Iteration count: %d\n", iteration);
 }
 
-void DelaunayTriangulation::EdgeFlip()
+void DelaunayTriangulation::EdgeFlip(int j, float* pt4)
 {
     /*
      Find the points that share an edge with the 4th point inside the circumcircle. Get this info by which if statement above returns 'true'.
@@ -164,6 +182,7 @@ void DelaunayTriangulation::EdgeFlip()
     */
 
     //TODO create function to do the edge flips
+    
 }
 
 void DelaunayTriangulation::WriteOutTriangle(char *filename)
