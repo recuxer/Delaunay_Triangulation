@@ -116,6 +116,7 @@ class DelaunayTriangulation
     void   AddPoint(float, float);
     bool   CircumcircleCheck(float*, float*, float*, float*);
     void   Verify();
+    void   DelBoundingTri();
     void   WriteOutTriangle(char *filename);
 
   private:
@@ -161,6 +162,14 @@ void DelaunayTriangulation::Verify()
 
     printf("Iteration count: %d\n", iteration);
     printf("Total flips: %d\n", totalFlips);
+}
+
+void DelaunayTriangulation::DelBoundingTri() 
+{
+    /*
+      Here is where I should delete the first, bounding triangle - update any triangles who have a triangle_across_e*
+      that is this bounding triangle. the DT should now be complete.
+    */
 }
 
 void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
@@ -436,8 +445,8 @@ int main()
     for (int i = 0 ; i < 100 ; i++)
         DT.AddPoint(pts[2*i], pts[2*i+1]);
  
-    //TODO Create correct DT: Call CircumcircleCheck to do Edge-flipping
     DT.Verify(); 
+    DT.DelBoundingTri();
 
     DT.WriteOutTriangle("kristi.vtk");
     return 0;
