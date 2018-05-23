@@ -162,6 +162,7 @@ void DelaunayTriangulation::Verify()
     done = (numTrianglesFlipped == 0 ? true : false);
     iteration++;
     printf("Iteration count: %d\n", iteration);
+    }
 }
 
 void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
