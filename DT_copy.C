@@ -132,7 +132,7 @@ void DelaunayTriangulation::Verify()
     int numTrianglesFlipped;
     bool done = false;
 
-    //while (!done) {
+    while (!done) {
       for(int j = 1; j < ncells; j++) {
 	numTrianglesFlipped = 0;
         if (triangles[j].triangle_across_e1 != NULL) {
@@ -155,11 +155,12 @@ void DelaunayTriangulation::Verify()
         }
         totalFlips += numTrianglesFlipped;
       }
-    done = (numTrianglesFlipped == 0 ? true : false);
-    iteration++;
+      done = (numTrianglesFlipped == 0 ? true : false);
+      iteration++;
+    }
+
     printf("Iteration count: %d\n", iteration);
     printf("Total flips: %d\n", totalFlips);
-    //}
 }
 
 void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
@@ -180,36 +181,36 @@ void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
     */
 
     //TODO create function to do the edge flips
-/*
+
     if (edge == 1) {
        triangles[j].triangle_across_e1->p1[0] = p4[0];
        triangles[j].triangle_across_e1->p1[1] = p4[1];
        triangles[j].triangle_across_e1->p2[0] = triangles[j].p2[0];
        triangles[j].triangle_across_e1->p2[1] = triangles[j].p2[1];
        triangles[j].triangle_across_e1->p3[0] = triangles[j].p3[0];
-       triangles[j].triangle_across_e1->p3[0] = triangles[j].p3[1];
+       triangles[j].triangle_across_e1->p3[1] = triangles[j].p3[1];
 
        //triangles[j].p1 and triangles[j].p3 are the same
        triangles[j].p2[0] = p4[0];
        triangles[j].p2[1] = p4[1];
     } else if (edge == 2) {
-       triangles[j].triangle_across_e1->p1[0] = triangles[j].p1[0];
-       triangles[j].triangle_across_e1->p1[1] = triangles[j].p1[1];
-       triangles[j].triangle_across_e1->p2[0] = triangles[j].p2[0];
-       triangles[j].triangle_across_e1->p2[1] = triangles[j].p2[1];
-       triangles[j].triangle_across_e1->p3[0] = p4[0];
-       triangles[j].triangle_across_e1->p3[0] = p4[1];
+       triangles[j].triangle_across_e2->p1[0] = triangles[j].p1[0];
+       triangles[j].triangle_across_e2->p1[1] = triangles[j].p1[1];
+       triangles[j].triangle_across_e2->p2[0] = triangles[j].p2[0];
+       triangles[j].triangle_across_e2->p2[1] = triangles[j].p2[1];
+       triangles[j].triangle_across_e2->p3[0] = p4[0];
+       triangles[j].triangle_across_e2->p3[1] = p4[1];
 
        //triangles[j].p1 and triangles[j].p3 are the same
        triangles[j].p2[0] = p4[0];
        triangles[j].p2[1] = p4[1];
     } else if (edge == 3) {
-       triangles[j].triangle_across_e1->p1[0] = triangles[j].p1[0];
-       triangles[j].triangle_across_e1->p1[1] = triangles[j].p1[1];
-       triangles[j].triangle_across_e1->p2[0] = triangles[j].p2[0];
-       triangles[j].triangle_across_e1->p2[1] = triangles[j].p2[1];
-       triangles[j].triangle_across_e1->p3[0] = p4[0];
-       triangles[j].triangle_across_e1->p3[0] = p4[1];
+       triangles[j].triangle_across_e3->p1[0] = triangles[j].p1[0];
+       triangles[j].triangle_across_e3->p1[1] = triangles[j].p1[1];
+       triangles[j].triangle_across_e3->p2[0] = triangles[j].p2[0];
+       triangles[j].triangle_across_e3->p2[1] = triangles[j].p2[1];
+       triangles[j].triangle_across_e3->p3[0] = p4[0];
+       triangles[j].triangle_across_e3->p3[1] = p4[1];
 
        triangles[j].p1[0] = triangles[j].p2[0];
        triangles[j].p1[1] = triangles[j].p2[1];
@@ -218,7 +219,7 @@ void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
        triangles[j].p3[0] = p4[0];
        triangles[j].p3[1] = p4[1];
 
-    } else printf("\n\n\n***edge error!***\n\n\n"); */
+    } else printf("\n\n\n***edge error!***\n\n\n");/* */
 }
 
 void DelaunayTriangulation::WriteOutTriangle(char *filename)
