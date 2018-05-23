@@ -128,41 +128,38 @@ void DelaunayTriangulation::Verify()
 {
     int ncells = triangles.size();
     int iteration = 0;
+    int totalFlips = 0;
     int numTrianglesFlipped;
     bool done = false;
 
-    while (!done) {
+    //while (!done) {
       for(int j = 1; j < ncells; j++) {
 	numTrianglesFlipped = 0;
         if (triangles[j].triangle_across_e1 != NULL) {
             if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e1->p2)) {
-                printf("fix me!\n");
 	        numTrianglesFlipped++; 
 	        EdgeFlip(j,triangles[j].triangle_across_e1->p2, 1);
 	    }
-            else printf("im ok..\n");
         }
         if (triangles[j].triangle_across_e2 != NULL) {
-            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e2->p3)) {
-                printf("fix me!\n"); 
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e2->p3)) { 
 	        numTrianglesFlipped++;
 		EdgeFlip(j,triangles[j].triangle_across_e2->p3, 2);
             }
-	    else printf("im ok..\n");
         } 
         if (triangles[j].triangle_across_e3 != NULL) {
-            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e3->p3)) {
-                printf("fix me!\n"); 
+            if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e3->p3)) { 
 	        numTrianglesFlipped++;
 	        EdgeFlip(j, triangles[j].triangle_across_e3->p3, 3);
 	    }
-            else printf("im ok..\n");
         }
+        totalFlips += numTrianglesFlipped;
       }
     done = (numTrianglesFlipped == 0 ? true : false);
     iteration++;
     printf("Iteration count: %d\n", iteration);
-    }
+    printf("Total flips: %d\n", totalFlips);
+    //}
 }
 
 void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
@@ -183,6 +180,7 @@ void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
     */
 
     //TODO create function to do the edge flips
+/*
     if (edge == 1) {
        triangles[j].triangle_across_e1->p1[0] = p4[0];
        triangles[j].triangle_across_e1->p1[1] = p4[1];
@@ -220,7 +218,7 @@ void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
        triangles[j].p3[0] = p4[0];
        triangles[j].p3[1] = p4[1];
 
-    } else printf("\n\n\n***edge error!***\n\n\n");
+    } else printf("\n\n\n***edge error!***\n\n\n"); */
 }
 
 void DelaunayTriangulation::WriteOutTriangle(char *filename)
