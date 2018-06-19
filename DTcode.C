@@ -135,8 +135,7 @@ void DelaunayTriangulation::Verify()
 
     while (!done) {
       numTrianglesFlipped = 0;
-      for(int j = 1; j < ncells; j++) {
-        //numTrianglesFlipped = 0;
+      for(int j = 1; j < ncells; j++) {   
         if (triangles[j].triangle_across_e1 != NULL) {
             if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e1->p2)) {
 	        numTrianglesFlipped++; 
@@ -155,14 +154,10 @@ void DelaunayTriangulation::Verify()
 	        EdgeFlip(j, triangles[j].triangle_across_e3->p3, 3);
 	    }
         }
-        //totalFlips += numTrianglesFlipped;
       }
       totalFlips += numTrianglesFlipped;
       done = (numTrianglesFlipped == 0 ? true : false);
       iteration++;
-      //numTrianglesFlipped = 0;
-      //totalFlips += numTrianglesFlipped;
-printf("total %d, flipped %d\n", totalFlips, numTrianglesFlipped);
     }
 
     printf("Iteration count: %d\n", iteration);
@@ -235,10 +230,12 @@ void DelaunayTriangulation::EdgeFlip(int j, float* p4, int edge)
     } else printf("\n\n\n***edge error!***\n\n\n");/* */
 }
 
+//DO NOT EDIT THIS FUNCTION
 void DelaunayTriangulation::WriteOutTriangle(char *filename)
 {
     int ncells = triangles.size();
-cerr << "NUMBER OF TRIANGLE is " << ncells << endl;
+    cerr << "NUMBER OF TRIANGLES is " << ncells << endl;
+
     int *celltypes = new int[ncells];
     for (int i = 0 ; i < ncells ; i++)
         celltypes[i] = VISIT_TRIANGLE;
@@ -429,7 +426,7 @@ DelaunayTriangulation::CircumcircleCheck(float* ptA, float* ptB, float* ptC, flo
 
     if (result < 0) return false; //ptD lies outside circumcircle
     else if (result > 0) return true; //ptD lies inside circumcircle
-
+    else if (result == 0) return false; // ptD lies ON the circle, for now acting like it lies outside...
     //what about if it equals zero? Lies *on* the circle...
 }
 
