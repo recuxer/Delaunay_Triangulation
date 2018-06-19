@@ -130,12 +130,13 @@ void DelaunayTriangulation::Verify()
     int ncells = triangles.size();
     int iteration = 0;
     int totalFlips = 0;
-    int numTrianglesFlipped;
+    int numTrianglesFlipped = 0;
     bool done = false;
 
     while (!done) {
+      numTrianglesFlipped = 0;
       for(int j = 1; j < ncells; j++) {
-	numTrianglesFlipped = 0;
+        //numTrianglesFlipped = 0;
         if (triangles[j].triangle_across_e1 != NULL) {
             if(CircumcircleCheck(triangles[j].p1, triangles[j].p2, triangles[j].p3, triangles[j].triangle_across_e1->p2)) {
 	        numTrianglesFlipped++; 
@@ -154,10 +155,14 @@ void DelaunayTriangulation::Verify()
 	        EdgeFlip(j, triangles[j].triangle_across_e3->p3, 3);
 	    }
         }
-        totalFlips += numTrianglesFlipped;
+        //totalFlips += numTrianglesFlipped;
       }
+      totalFlips += numTrianglesFlipped;
       done = (numTrianglesFlipped == 0 ? true : false);
       iteration++;
+      //numTrianglesFlipped = 0;
+      //totalFlips += numTrianglesFlipped;
+printf("total %d, flipped %d\n", totalFlips, numTrianglesFlipped);
     }
 
     printf("Iteration count: %d\n", iteration);
