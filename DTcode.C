@@ -25,6 +25,7 @@ using std::endl;
 // (and the picture could be flipped, rotated, etc.)
 //
 
+//DO NOT EDIT THIS FUNCTION
 float * 
 PointsGenerator(int numPoints, int dim = 2)
 {
@@ -41,6 +42,7 @@ PointsGenerator(int numPoints, int dim = 2)
     return array;
 }
 
+//DO NOT EDIT THIS FUNCTION
 bool IsOnSameSide(float *endPoint1, float *endPoint2, 
                   float *referencePoint, float *newPoint)
 {
@@ -94,6 +96,7 @@ class OneTriangle
     }
 };
 
+//DO NOT EDIT THIS FUNCTION
 bool
 OneTriangle::ContainsPoint(float x, float y)
 {
@@ -269,8 +272,6 @@ void DelaunayTriangulation::WriteOutTriangle(char *filename)
                             NULL, NULL, NULL, NULL);
 }
     
-
-
 void
 DelaunayTriangulation::Initialize(float x1, float y1, float x2, float y2, float x3, float y3)
 {
@@ -399,13 +400,14 @@ DelaunayTriangulation::AddPoint(float x1, float y1)
 // the result will be negative. If the 4th point lies outside the circle, result will be positive. A result equal to zero means that the 4th
 // point lies on the circle exactly. In this case, the DT of the set of points is not unique. It's like drawing two triangles in a square. 
 // Whether the 3rd point and the 0th point make up the hypotenous or the 2nd and the 1st point make up the hypotenus, it's equivalent and
-// therefore you could do either one and make a valid DT. Will need to call a seperate function to handle that case later.
+// therefore you could do either one and make a valid DT. Will need to call a seperate function to handle that case later. For now I return false,
+// meaning that I do not flip it and leave it as is...
 //
 // Inputs: 3 points, each with x and y coordinates (or z in case of 3D) and a 4th point with x and y coordinates. This makes up points A, B, C (of the
 // triangle) and the 4th point, D.
-// Output: Boolean value. True if 4th point is inside circle. This means we have to split. False if 4th point is outside circle. This means we're ok.
+// Output: Boolean value. True if 4th point is inside circle. This means we have to flip. False if 4th point is outside circle. This means we're ok.
 //
-// TODO: create another case where we call a function to handle if the result is equal to zero  
+// TODO: create another case where we call a function to handle if the result is equal to zero - for now, return false  
 bool 
 DelaunayTriangulation::CircumcircleCheck(float* ptA, float* ptB, float* ptC, float* ptD)
 {
